@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DevToys.CSharpToTypescript.Converters;
 
-public class SytaxWalker(DateType dateAsString, bool toCamelCase, bool publicOnly) : CSharpSyntaxWalker
+public class SytaxWalker(DateType dateAsString, bool toCamelCase, bool publicOnly, bool addExport) : CSharpSyntaxWalker
 {
     internal readonly StringBuilder _builder = new();
     internal readonly string[] arrayTypes = [
@@ -210,7 +210,7 @@ public class SytaxWalker(DateType dateAsString, bool toCamelCase, bool publicOnl
             baseTypes = $" extends {string.Join(", ", node.BaseList.Types.Select(t => this.ToTsType(t.Type)))}";
         }
 
-        builder.AppendLine($"interface {node.Identifier.Text}{typeParams}{baseTypes} {{");
+        builder.AppendLine($"{(addExport ? "export " : "")}interface {node.Identifier.Text}{typeParams}{baseTypes} {{");
 
         foreach (var item in enumMember(node))
         {

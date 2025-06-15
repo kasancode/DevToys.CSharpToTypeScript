@@ -3,9 +3,9 @@
     [TestClass()]
     public class CsTsCodeConveterTests
     {
-        internal void ConvertTestCore(string baseCode, string expected, DateType dateType, bool toCamelCase, bool publicOnly)
+        internal void ConvertTestCore(string baseCode, string expected, DateType dateType, bool toCamelCase, bool publicOnly, bool addExport)
         {
-            var conveter = new CsTsCodeConveter(baseCode, dateType, toCamelCase, publicOnly);
+            var conveter = new CsTsCodeConveter(baseCode, dateType, toCamelCase, publicOnly, addExport);
             var actual = conveter.Convert().Trim();
             Assert.AreEqual(expected.Trim(), actual);
         }
@@ -73,7 +73,7 @@
                     doubleValue2: number;
                     decimalValue2: number;
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -93,7 +93,7 @@
                     dateOnlyValue: Date;
                     timeOnlyValue: Date;
                 }
-                """, DateType.Date, true, true);
+                """, DateType.Date, true, true, false);
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@
                     dateOnlyValue: string;
                     timeOnlyValue: string;
                 }
-                """, DateType.String, true, true);
+                """, DateType.String, true, true, false);
         }
 
         [TestMethod]
@@ -133,7 +133,7 @@
                     dateOnlyValue: Date | string;
                     timeOnlyValue: Date | string;
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -155,7 +155,7 @@
                     stringValue2: string;
                     charValue2: string;
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -195,7 +195,7 @@
                     items: Item[];
                     itemEnumerable: Item[];
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -217,7 +217,7 @@
                     stringIntIDictionary: {[key: string]: number};
                     stringIntReadOnlyDictionary: {[key: string]: number};
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -235,7 +235,7 @@
                     simpleTuple: [number, string];
                     nestedTuple: [number, [number, string | null]];
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -250,7 +250,7 @@
                     name: string;
                     value: number;
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -286,7 +286,7 @@
                     value1: T1;
                     value2: T2;
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -314,7 +314,7 @@
 
                 interface InheritanceTest extends DerivedInterface {
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -334,7 +334,7 @@
                     nullableString: string | null;
                     nullableDateTime: Date | string | null;
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -354,7 +354,7 @@
                     AnotherProperty: string;
                     my_property: string;
                 }
-                """, DateType.Union, false, true);
+                """, DateType.Union, false, true, false);
         }
 
         [TestMethod]
@@ -380,7 +380,7 @@
                 interface PublicOnlyTest {
                     publicProperty: number;
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
 
         [TestMethod]
@@ -416,7 +416,25 @@
                     protectedProperty: number;
                     internalProperty: number;
                 }
-                """, DateType.Union, true, false);
+                """, DateType.Union, true, false, false);
+        }
+
+        [TestMethod]
+        public void ConvertTestAddExport()
+        {
+            this.ConvertTestCore("""
+                public class ExportTest
+                {
+                    public int Id { get; set; }
+                    public string Name { get; set; }
+                }
+                """,
+                """
+                export interface ExportTest {
+                    id: number;
+                    name: string;
+                }
+                """, DateType.Union, true, true, true);
         }
 
         [TestMethod]
@@ -459,7 +477,7 @@
                     items: Item[];
                     itemDictionary: {[key: string]: Item};
                 }
-                """, DateType.Union, true, true);
+                """, DateType.Union, true, true, false);
         }
     }
 }
