@@ -94,7 +94,7 @@ internal sealed class CSharpToTypescriptGui : IGuiTool
                                             this.OnChanged
                                         ),
                                     Setting()
-                                        .Icon("FluentSystemIcons", '\uF581')
+                                        .Icon("FluentSystemIcons", '\uE795')
                                         .Title("Public only")
                                         .Description("Convert only public classes, interfaces and members.")
                                         .Handle(
