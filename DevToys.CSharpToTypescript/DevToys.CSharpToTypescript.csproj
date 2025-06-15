@@ -1,30 +1,53 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Title>DevToys.CSharpToTypescript</Title>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/kasancode/DevToys.CSharpToTypeScript</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CaseConverter" Version="2.0.1" />
-    <PackageReference Include="DevToys.Api" Version="2.0.8-preview" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="CSharpToTypescriptExtension.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CSharpToTypescriptExtension.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CaseConverter" Version="2.0.1" />
+		<PackageReference Include="DevToys.Api" Version="2.0.8-preview" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="CSharpToTypescriptExtension.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CSharpToTypescriptExtension.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="CSharpToTypescriptExtension.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>CSharpToTypescriptExtension.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
+	<ItemGroup>
+		<EmbeddedResource Update="CSharpToTypescriptExtension.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>CSharpToTypescriptExtension.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<Target Name="IncludeAllFilesInTargetDir" BeforeTargets="_GetPackageFiles">
+		<ItemGroup>
+			<None Include="$(OutputPath)\**">
+				<Pack>true</Pack>
+				<PackagePath>lib</PackagePath>
+			</None>
+		</ItemGroup>
+	</Target>
 </Project>
